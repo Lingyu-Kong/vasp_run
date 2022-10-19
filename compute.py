@@ -70,16 +70,20 @@ if __name__=="__main__":
     time_list=[]
     for i,file in enumerate(files):
         if file.endswith(".res"):
-            atoms=read(os.path.join(args.path,file))
-            start_time=time.time()
-            atoms.set_calculator(calc)
-            traj.write(atoms)
-            end_time=time.time()
-            print("compute "+file+" in "+str(end_time-start_time)+"s")
-            print("energy: ",atoms.get_potential_energy())
-            print("{} / {}".format(i+1,len(files)))
-            print("===============================================")
-            time_list.append(end_time-start_time)
+            try:
+                atoms=read(os.path.join(args.path,file))
+                start_time=time.time()
+                atoms.set_calculator(calc)
+                traj.write(atoms)
+                end_time=time.time()
+                print("compute "+file+" in "+str(end_time-start_time)+"s")
+                print("energy: ",atoms.get_potential_energy())
+                print("{} / {}".format(i+1,len(files)))
+                print("===============================================")
+                time_list.append(end_time-start_time)
+            except:
+                print("compute "+file+" failed")
+                print("===============================================")
         os.system("rm -rf ./vasp_run/*")
     traj.close()
     print("average time: "+str(np.mean(time_list)))
