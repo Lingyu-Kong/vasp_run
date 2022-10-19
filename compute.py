@@ -68,7 +68,7 @@ if __name__=="__main__":
     traj=TrajectoryWriter("results/result["+str(args.interleave[0])+","+str(args.interleave[1])+"].traj",\
                             mode="a",properties=["energy","forces","stress"])
     time_list=[]
-    for file in files:
+    for i,file in enumerate(files):
         if file.endswith(".res"):
             atoms=read(os.path.join(args.path,file))
             start_time=time.time()
@@ -77,6 +77,7 @@ if __name__=="__main__":
             end_time=time.time()
             print("compute "+file+" in "+str(end_time-start_time)+"s")
             print("energy: ",atoms.get_potential_energy())
+            print("{} / {}".format(i+1,len(files)))
             print("===============================================")
             time_list.append(end_time-start_time)
         os.system("rm -rf ./vasp_run/*")
