@@ -78,7 +78,6 @@ if __name__=="__main__":
                 traj.write(atoms)
                 end_time=time.time()
                 print("compute "+file+" in "+str(end_time-start_time)+"s")
-                print("energy: ",atoms.get_potential_energy())
                 print("{} / {}".format(i+1,len(files)))
                 print("===============================================")
                 time_list.append(end_time-start_time)
