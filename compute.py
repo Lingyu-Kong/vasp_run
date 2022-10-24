@@ -19,9 +19,10 @@ parser.add_argument("--ismear",type=int,default=0)
 parser.add_argument("--sigma",type=float,default=0.02)
 parser.add_argument("--amplitude",type=float,default=0.2)
 parser.add_argument("--kspacing",type=float,default=0.2)
-parser.add_argument("--gamma",action="store_true")
+parser.add_argument("--gamma",type=bool,default=True)
 parser.add_argument("--nelm",type=int,default=200)
 parser.add_argument("--wandb",action="store_true")
+parser.add_argument("--wandb_key",type=str,default="456bb4bf23bb4ed5c90d46c282e58d933ddbe068")
 parser.add_argument("--print_log",action="store_true")
 args=parser.parse_args()
 ASE_VASP_COMMAND="mpirun -np "+str(args.n_core)+" vasp_std"
@@ -31,7 +32,7 @@ assert(os.path.exists(args.path))
 assert(os.path.exists(os.getcwd()+"/VASP_PP"))  ## VASP_PP must be under the working directory
 
 if args.wandb:
-    wandb.login(key="37f3de06380e350727df28b49712f8b7fe5b14aa")
+    wandb.login(key=args.wandb_key)
     wandb.init(project="vasp compute",name="compute "+args.path+" ["+str(args.interleave[0])+","+str(args.interleave[1])+"]",config=args)
     
 ## set VASP_PP_PATH
