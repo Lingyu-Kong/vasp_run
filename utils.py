@@ -15,3 +15,6 @@ def zipDir(dirpath, outFullName):
  
         for filename in filenames:
             zip.write(os.path.join(path, filename), os.path.join(fpath, filename))
+            
+if __name__=="__main__":
+    zipDir("gencell","B28.zip")
