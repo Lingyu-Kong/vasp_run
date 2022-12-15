@@ -133,3 +133,5 @@ vasp_run/
 results/
 results.zip
 gencell/
+a.*
+b.*

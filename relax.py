@@ -1,6 +1,7 @@
 import ase
 from ase.io import read, write,Trajectory
 from ase.calculators.vasp import Vasp
+from ase.calculators.lj import LennardJones
 from ase.constraints import ExpCellFilter
 from ase.optimize.precon import PreconLBFGS, Exp
 import argparse

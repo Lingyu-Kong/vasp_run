@@ -1,6 +1,7 @@
 """Run VASP to Compute the Energy, Forces, Stress of a Structure"""
 import argparse
 import os
+import pickle
 import time
 import wandb
 import numpy as np
@@ -65,10 +66,11 @@ if __name__=="__main__":
     files=os.listdir(args.path)
     files.sort()
     print("Total number of structures: ",len(files))
-    files=files[args.interleave[0]:args.interleave[1]]
+    files=files[args.interleave[0]:min(args.interleave[1],len(files))]
     traj=TrajectoryWriter("results/result["+str(args.interleave[0])+","+str(args.interleave[1])+"].traj",\
                             mode="a",properties=["energy","forces","stress"])
     time_list=[]
+    energies_dict={}
     for i,file in enumerate(files):
         if file.endswith(".res"):
             try:
@@ -77,6 +79,7 @@ if __name__=="__main__":
                 atoms.set_calculator(calc)
                 traj.write(atoms)
                 end_time=time.time()
+                energies_dict[file]=atoms.get_potential_energy()
                 print("compute "+file+" in "+str(end_time-start_time)+"s")
                 print("energy: ",atoms.get_potential_energy())
                 print("{} / {}".format(i+1,len(files)))
@@ -88,6 +91,10 @@ if __name__=="__main__":
         os.system("rm -rf ./vasp_run/*")
     traj.close()
     print("average time: "+str(np.mean(time_list)))
+    
+    with open("./results/energies.pkl", 'wb') as f:
+            pickle.dump(energies_dict, f)
+    
     if args.wandb:
         zipDir("results","results.zip")
         wandb.save("results.zip")
