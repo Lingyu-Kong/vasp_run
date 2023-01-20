@@ -133,5 +133,6 @@ vasp_run/
 results/
 results.zip
 gencell/
+datasets/
 a.*
 b.*
